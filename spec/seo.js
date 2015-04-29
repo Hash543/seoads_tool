@@ -17,6 +17,9 @@ if(_.isUndefined(yconfig.keyword)){
 }
 var i;
 var permote = false;
+var searching = function(){
+    
+}
 describe('permote keyword ' + yconfig.keyword + ' seo on Yahoo', function() {
   it('should add a todo', function() {
     b.get('http://tw.yahoo.com');
@@ -38,6 +41,11 @@ describe('permote keyword ' + yconfig.keyword + ' seo on Yahoo', function() {
     		}
     	}).then(function(){
             //進行換頁的動作
+            b.findElement(By.id('pg-next')).then(function(next){
+                if(next !== null){
+                    next.click();
+                }
+            });
         });
     	/*b.getTitle().then(function(title){
     		console.log("title");
