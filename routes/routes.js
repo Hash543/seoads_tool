@@ -34,5 +34,23 @@ router.post("/" + seo.yahoo, function (req, res) {
 	fs.writeSync(f, JSON.stringify(newData) , 'utf-8');
   	res.render(seo.yahoo, { sdata: newData });
 });
-
+router.get("/" + seo.google, function(req, res, next) {
+	var data = JSON.parse(fs.readFileSync(scConfig.google));
+	if(data === null){
+		data = {
+			keyword: '',
+			url: ''
+		}
+	}
+  	res.render(seo.google,{sdata:data});
+});
+router.post("/" + seo.google, function (req, res) {
+	var newData ={
+		keyword: req.body.keyword, 
+		url: req.body.url
+	};
+	var f = fs.openSync(scConfig.google , 'w+');
+	fs.writeSync(f, JSON.stringify(newData) , 'utf-8');
+  	res.render(seo.google, { sdata: newData });
+});
 module.exports = router;
