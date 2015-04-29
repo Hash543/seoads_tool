@@ -1,5 +1,14 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+doctype html
+html(lang="en")
+	head
+		title= pageTitle
+		link(rel="stylesheet" type="text/css" href="/css/index.css")
+	body
+		div(class='main',style={width:'100%'})
+			div(class='box',style={width:'970px',margin:'auto',border:'1px dashed #55aaff',padding:'20px'})
+				div(class='func-box',style={width:'50%',height:'100px',display:'inline-block'})
+					a(class='func',style={'font-size':'16px'},href='/seoyahoo')
+						| Yahoo Seo enhance
+				div(class='func-box',style={width:'50%',height:'100px',display:'inline-block'})
+					a(class='func',style={'font-size':'16px'},href='/seogoogle') 
+						| Google Seo enhance
