@@ -8,6 +8,7 @@ var _ = require('lodash');
 var fs = require('fs');
 var chromeLocation = require('chrome-location');
 var seoConfig = require('../config/seoConfig');
+var seo = seoConfig.seo;
 var scConfig = seoConfig.scConfig;
 var yconfig = JSON.parse(fs.readFileSync(scConfig.yahoo));
 if(_.isUndefined(yconfig.keyword)){
@@ -41,6 +42,15 @@ var changePage = function(){
     }).then(function(){
         if(pageChanged === false){
             searchResultFilter();
+        }
+    });
+}
+var matchingPromise = function(link){
+    link.getAttribute('href').then(function(attr){
+        console.log("  --href:" + attr);
+        if(attr.match(yconfig.url) ){
+            link.click();
+            return link;
         }
     });
 }

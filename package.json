@@ -17,6 +17,8 @@
     "lodash": "*",
     "nodemon": "*",
     "selenium-webdriver":"*",
-    "chrome-location": "*"
+    "chrome-location": "*",
+    "forever": "0.14.1",
+    "forever-monitor": "1.5.2"
   }
 }
