@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var express = require('express');
 var router = express.Router();
 
@@ -9,6 +10,14 @@ var assassin = seoConfig.as;
 var scConfig = seoConfig.scConfig;
 var scf;
 var commonTemplate = "editConfig" ;
+var execMode = 'public/execMode.txt';
+var fem;
+if(fs.existsSync(execMode)){
+	fem = fs.openSync(execMode , 'r+');
+}else{
+	fem = fs.openSync(execMode , 'w+');
+	fs.writeSync(fem , '1');
+}
 Object.keys(scConfig).map(function(value, index) {
    	if(!fs.existsSync(scConfig[value])){
    		scf = fs.openSync(scConfig[value] , 'w+');
@@ -16,10 +25,23 @@ Object.keys(scConfig).map(function(value, index) {
    	}
 });
 router.get('/', function(req, res, next) {
-  	res.render('index');
+	var modes = seoConfig.mode;
+	var v;
+	console.log(fs.readFileSync(execMode , {encoding:'utf-8'}));
+  	res.render('index' , { 
+  		mode: seoConfig.mode,
+  		currentMode: fs.readFileSync(execMode)
+  	});
+});
+router.post('/', function(req, res, next) {
+	
+  	if(!_.isUndefined(req.body.mode)){
+  		fs.write(fem , req.body.mode , 0);
+  	}
+  	res.send(req.body.mode);
 });
 router.get("/" + seo.yahoo, function(req, res, next) {
-	var data = JSON.parse(fs.readFileSync(scConfig.yahoo));
+	var data = JSON.parse(fs.readFileSync(scConfig.yahoo, {encoding:'utf-8'}));
 	if(data === null){
 		data = {
 			keyword: '',
@@ -38,7 +60,7 @@ router.post("/" + seo.yahoo, function (req, res) {
   	res.render(commonTemplate , { sdata: newData });
 });
 router.get("/" + seo.google, function(req, res, next) {
-	var data = JSON.parse(fs.readFileSync(scConfig.google));
+	var data = JSON.parse(fs.readFileSync(scConfig.google, {encoding:'utf-8'}));
 	if(data === null){
 		data = {
 			keyword: '',
@@ -57,7 +79,7 @@ router.post("/" + seo.google, function (req, res) {
   	res.render(commonTemplate , { sdata: newData });
 });
 router.get("/" + assassin.yahoo, function(req, res, next) {
-	var data = JSON.parse(fs.readFileSync(scConfig.asYahoo));
+	var data = JSON.parse(fs.readFileSync(scConfig.asYahoo, {encoding:'utf-8'}));
 	if(data === null){
 		data = {
 			keyword: '',
@@ -76,7 +98,7 @@ router.post("/" + assassin.yahoo, function (req, res) {
   	res.render(commonTemplate , { sdata: newData });
 });
 router.get("/" + assassin.google, function(req, res, next) {
-	var data = JSON.parse(fs.readFileSync(scConfig.asGoogle));
+	var data = JSON.parse(fs.readFileSync(scConfig.asGoogle, {encoding:'utf-8'}));
 	if(data === null){
 		data = {
 			keyword: '',

@@ -27,7 +27,10 @@ var searchResultFilter = function(){
     var linkMatch = false;
     var matchResult = null;
     b.sleep(_.random(2000, 8000));
-    b.findElements(By.css('.srg .g .r a')).then(function(t){
+    b.findElements(By.css('#vs0p1')).then(function(t){
+        if(t.length < 1){
+            return;
+        }
         t.map(function(v , k){
             b.getTitle().then(function(title){
                 console.log(title);
@@ -38,7 +41,9 @@ var searchResultFilter = function(){
                     //過濾蒐尋結果的連結網址
                     v.getAttribute('href').then(function(attr){
                         console.log("  --href:" + attr);
-                        if(attr.match(gconfig.url) ){
+                        if(!attr.match(gconfig.url) ){
+                            console.log("對此網址進行刺殺");
+                            console.log(attr);
                             matchResult = v;
                         }
                     });
@@ -48,10 +53,39 @@ var searchResultFilter = function(){
     }).then(function(){
         //進行換頁的動作
         //需要注意 google 頁面有兩種版型
-        console.log("進行換頁的動作");
-        console.log(linkMatch);
         if(matchResult === null){
-            
+            console.log("上方廣告區塊沒有符合資料!");
+            b.findElements(By.css('#vs1p1')).then(function(t2){
+                if(t2.length < 1){
+                    console.log("右邊廣告區塊沒有符合資料!");
+                    return;
+                }
+                t2.map(function(v2 , k2){
+                    b.getTitle().then(function(title){
+                        console.log(title);
+                        console.log(linkMatch);
+                        if(linkMatch != true){
+                            b.executeScript('window.scrollTo(0,'+ (200*(k+1)) +');').then();
+                            b.sleep(_.random(500 , 1000));
+                            //過濾蒐尋結果的連結網址
+                            v.getAttribute('href').then(function(attr){
+                                console.log("  --href:" + attr);
+                                if(!attr.match(gconfig.url) ){
+                                    console.log("對此網址進行刺殺");
+                                    console.log(attr);
+                                    matchResult = v;
+                                }
+                            });
+                        }
+                    });
+                });
+            }).then(function(){
+                if(matchResult != null){
+                    matchResult.click();
+                    b.sleep(_.random(2000 , 8000));
+                    console.log("\n\n---------------job done---------------\n\n");
+                }
+            });
         }else{
             matchResult.click();
             b.sleep(_.random(2000 , 8000));
@@ -63,21 +97,18 @@ var searchResultFilter = function(){
         console.log(title);
     });*/
 }
-var run = function(){
-    //console.log(fs.readFileSync(chromeLocation + "\\..\\..\\user data\\default\\cookies"));
-    //fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
-    //fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default");
-    //console.log(process.env.APPDATA);
-    console.log("patten:");
-    console.log("  --keyword:" + gconfig.keyword);
-    console.log("  --url:" + gconfig.url);
-    b.get('http://www.google.com/ncr');
-    b.sleep(_.random(2000, 8000));
-    b.findElement(By.name('q')).sendKeys(gconfig.keyword);
-    b.findElement(By.name('btnG')).click().then(function(){
-        searchResultFilter();
-    });
-    b.sleep(5000);
-    b.quit();
-}
-run();
+//console.log(fs.readFileSync(chromeLocation + "\\..\\..\\user data\\default\\cookies"));
+//fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
+//fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default");
+//console.log(process.env.APPDATA);
+console.log("patten:");
+console.log("  --keyword:" + gconfig.keyword);
+console.log("  --url:" + gconfig.url);
+b.get('http://www.google.com/ncr');
+b.sleep(_.random(2000, 8000));
+b.findElement(By.name('q')).sendKeys(gconfig.keyword);
+b.findElement(By.name('btnG')).click().then(function(){
+    searchResultFilter();
+});
+b.sleep(5000);
+b.quit();

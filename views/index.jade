@@ -3,19 +3,16 @@ html(lang="en")
 	head
 		title= pageTitle
 		link(rel="stylesheet" type="text/css" href="/css/main.css")
+		script(type='text/javascript' src='/javascripts/jquery-1.11.3.min.js')
+		script(type='text/javascript' src='/javascripts/index.js')
 	body
 		include ./header.jade
 		div(class='main',style={width:'100%'})
 			div(class='box',style={width:'970px',margin:'auto',border:'1px dashed #55aaff',padding:'20px'})
-				div(class='func-box',style={width:'50%',height:'100px',display:'inline-block'})
-					a(class='func',style={'font-size':'16px'},href='/seoyahoo')
-						| Yahoo Seo enhance
-				div(class='func-box',style={width:'50%',height:'100px',display:'inline-block'})
-					a(class='func',style={'font-size':'16px'},href='/seogoogle') 
-						| Google Seo enhance
-				div(class='func-box',style={width:'50%',height:'100px',display:'inline-block'})
-					a(class='func',style={'font-size':'16px'},href='/asyahoo') 
-						| Yhaoo Assassin
-				div(class='func-box',style={width:'50%',height:'100px',display:'inline-block'})
-					a(class='func',style={'font-size':'16px'},href='/asgoogle') 
-						| Google Assassin
+				div(class='errorMsg',style={width:'100%',display:'none'})
+				input(type='hidden' , name='currentMode' , value=currentMode)
+				each v , k in mode					
+					div(class='func-box',style={width:'50%',height:'100px',display:'inline-block'})
+						input(type='radio', name='execMode' , value=v.num , checked=v.checked)
+						a(class='func',style={'font-size':'16px'},href='/seoyahoo')
+							= v.title

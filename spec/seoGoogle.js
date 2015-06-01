@@ -77,21 +77,18 @@ var searchResultFilter = function(){
         console.log(title);
     });*/
 }
-var run = function(){
-    //console.log(fs.readFileSync(chromeLocation + "\\..\\..\\user data\\default\\cookies"));
-    //fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
-    //fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default");
-    //console.log(process.env.APPDATA);
-    console.log("patten:");
-    console.log("  --keyword:" + gconfig.keyword);
-    console.log("  --url:" + gconfig.url);
-    b.get('http://www.google.com/ncr');
-    b.sleep(_.random(2000, 8000));
-    b.findElement(By.name('q')).sendKeys(gconfig.keyword);
-    b.findElement(By.name('btnG')).click().then(function(){
-        searchResultFilter();
-    });
-    b.sleep(5000);
-    b.quit();
-}
-run();
+//console.log(fs.readFileSync(chromeLocation + "\\..\\..\\user data\\default\\cookies"));
+//fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
+//fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default");
+//console.log(process.env.APPDATA);
+console.log("patten:");
+console.log("  --keyword:" + gconfig.keyword);
+console.log("  --url:" + gconfig.url);
+b.get('http://www.google.com/ncr');
+b.sleep(_.random(2000, 8000));
+b.findElement(By.name('q')).sendKeys(gconfig.keyword);
+b.findElement(By.name('btnG')).click().then(function(){
+    searchResultFilter();
+});
+b.sleep(5000);
+b.quit();

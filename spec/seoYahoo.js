@@ -88,21 +88,15 @@ var searchResultFilter = function(){
         console.log(title);
     });*/
 }
-var run = function(){
-    //console.log(fs.readFileSync(chromeLocation + "\\..\\..\\user data\\default\\cookies"));
-    //fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
-    //fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default");
-    //console.log(process.env.APPDATA);
-    console.log("patten:");
-    console.log("  --keyword:" + yconfig.keyword);
-    console.log("  --url:" + yconfig.url);
-    b.get('http://tw.yahoo.com');
-    b.sleep(_.random(2000, 8000));
-    b.findElement(By.name('p')).sendKeys(yconfig.keyword);
-    b.findElement(By.id('UHSearchWeb')).click().then(function(){
-        searchResultFilter();
-    });
-    b.sleep(5000);
-    b.quit();
-}
-run();
+console.log("patten Yahoo:");
+console.log("  --keyword:" + yconfig.keyword);
+console.log("  --url:" + yconfig.url);
+b.get('http://tw.yahoo.com');
+b.sleep(_.random(2000, 8000));
+b.findElement(By.name('p')).sendKeys(yconfig.keyword);
+b.findElement(By.id('UHSearchWeb')).click().then(function(){
+    searchResultFilter();
+});
+b.sleep(5000);
+b.quit();
+console.log(112233);
