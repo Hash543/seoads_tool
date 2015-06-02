@@ -11,6 +11,7 @@ var scConfig = seoConfig.scConfig;
 var scf;
 var commonTemplate = "editConfig" ;
 var execMode = 'public/execMode.txt';
+var adslconfig = __dirname + '/../public/adslconfig.json';
 var fem;
 if(fs.existsSync(execMode)){
 	fem = fs.openSync(execMode , 'r+');
@@ -30,16 +31,44 @@ router.get('/', function(req, res, next) {
 	console.log(fs.readFileSync(execMode , {encoding:'utf-8'}));
   	res.render('index' , { 
   		mode: seoConfig.mode,
-  		currentMode: fs.readFileSync(execMode)
+  		currentMode: fs.readFileSync(execMode , {encoding:'utf-8'})
   	});
 });
 router.post('/', function(req, res, next) {
-	
   	if(!_.isUndefined(req.body.mode)){
   		fs.write(fem , req.body.mode , 0);
   	}
   	res.send(req.body.mode);
 });
+
+//adslaccount
+router.get('/adslaccount', function(req, res, next) {
+	var content = fs.readFileSync(adslconfig , {encoding:'utf-8'});
+	var config = JSON.parse( content );
+	if(config === null){
+		config = {
+			name: '',
+			id: '',
+			password: ''
+		}
+	}
+  	res.render('adslconfig' , { 
+  		adsl: config
+  	});
+});
+router.post('/adslaccount', function(req, res, next) {
+  	var newConfig = {
+		name: req.body.name, 
+		id: req.body.id, 
+		password: req.body.password
+	};
+	console.log(req.body);
+	console.log(newConfig);
+	var f = fs.openSync(adslconfig , 'w+');
+	fs.writeSync(f, JSON.stringify(newConfig) , 'utf-8');
+  	res.render('adslconfig' , { adsl: newConfig });
+});
+//adslaccount
 router.get("/" + seo.yahoo, function(req, res, next) {
 	var data = JSON.parse(fs.readFileSync(scConfig.yahoo, {encoding:'utf-8'}));
 	if(data === null){

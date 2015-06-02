@@ -9,7 +9,7 @@ var fs = require('fs');
 var exec = require('child_process').exec,
     child;
 var error = false;
-
+var adsl = fs.readFileSync('public/adslconfig.json' , {encoding:'utf-8'});
 var cb = function(err ,b ,c){
     error = err;
     console.log(err);
@@ -49,9 +49,9 @@ var execScenario = function(){
     //firefox cookies
     fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default" , "w+");
 };*/
-/*exec('Rasdial "'+ ADSL_NAME +'" /disconnect' ,function(err){
+/*exec('Rasdial "'+ adsl.name +'" /disconnect' ,function(err){
     if(!err){
-        exec('Rasdial '+ ADSL_NAME +' '+ ADSL_ACCOUNT +' '.ADSL_PASSWORD , function(err2){
+        exec('Rasdial '+ adsl.name +' '+ adsl.id +' ' + adsl.password , function(err2){
             if(!err2){
                 execScenario();
             }
