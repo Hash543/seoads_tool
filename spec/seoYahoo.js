@@ -15,6 +15,7 @@ if(_.isUndefined(yconfig.keyword)){
     throw "yconfig is undefined!!!";
 }
 var i;
+var pageNum = 0;
 var linkMatch = null;
 var permote = false;
 var webdriver = require('selenium-webdriver'),
@@ -26,6 +27,7 @@ var b = new webdriver.Builder()
     .build();
 var changePage = function(){
     var pageChanged = false;
+    pageNum++;
     b.findElements(By.css('.next')).then(function(next){
         if(next.length > 0){
             next[0].click();
@@ -76,7 +78,9 @@ var searchResultFilter = function(){
         //進行換頁的動作
         //需要注意 yahoo 頁面有兩種版型
         if(linkMatch == null){
-            changePage();
+            if(pageNum < 10){
+                changePage();
+            }
         }else{
             linkMatch.click();
             b.sleep(_.random(2000 , 8000));

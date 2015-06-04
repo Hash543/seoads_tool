@@ -11,6 +11,7 @@ var seoConfig = require('../config/seoConfig');
 var seo = seoConfig.seo;
 var scConfig = seoConfig.scConfig;
 var gconfig = JSON.parse(fs.readFileSync(scConfig.google));
+var pageNum = 0;
 if(_.isUndefined(gconfig.keyword)){
     console.log("gconfig is undefined!!!");
     throw "gconfig is undefined!!!";
@@ -26,6 +27,7 @@ var b = new webdriver.Builder()
     .build();
 var changePage = function(){
     var pageChanged = false;
+    pageNum++;
     console.log("   --- should change page!");
     b.findElements(By.id('pnnext')).then(function(next){
         if(next.length > 0){
@@ -65,7 +67,9 @@ var searchResultFilter = function(){
         console.log("進行換頁的動作");
         console.log(linkMatch);
         if(matchResult === null){
-            changePage();
+            if(pageNum < 10){
+                changePage();
+            }
         }else{
             matchResult.click();
             b.sleep(_.random(2000 , 8000));

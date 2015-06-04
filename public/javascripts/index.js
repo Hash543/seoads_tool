@@ -1,8 +1,7 @@
 $(document).ready(function(){
 	var currentMode = $('input[name="currentMode"]').val();
     var execMode = $('input[name="execMode"]');
-    $('input[name="execMode"][value="'+currentMode+'"]').checked = true;
-    console.log(currentMode);
+    $('input[name="execMode"][value="'+currentMode+'"]').prop('checked',true);
     execMode.change(function(e){
     	jQuery.ajax( '/', {
     		method: 'post',

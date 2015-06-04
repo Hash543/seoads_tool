@@ -37,7 +37,7 @@ var linkMatching = function(t){
         //過濾蒐尋結果的連結網址
         v.getAttribute('href').then(function(attr){
             console.log("  --href:" + attr);
-            if(!attr.match(yconfig.url) ){
+            if(!attr.match(yconfig.url && linkMatch === null) ){
                 console.log("對此網址進行刺殺");
                 console.log(attr);
                 linkMatch = v;
@@ -48,7 +48,7 @@ var linkMatching = function(t){
 var searchResultFilter = function(){
     console.log("searchResultFilter...");
     b.sleep(_.random(2000, 8000));
-    b.findElements(By.css('.bcan1cb')).then(function(t){
+    b.findElements(By.css('.title .bcan1cb')).then(function(t){
         if(t.length > 0){
             linkMatching(t);
         }
