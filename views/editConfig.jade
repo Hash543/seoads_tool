@@ -1,18 +1,11 @@
-doctype html
-html(lang="en")
-	head
-		title= pageTitle
-		link(rel="stylesheet" type="text/css" href="/css/main.css")
-	body
-		include ./header.jade
-		div(class='main',style={width:'100%'})
-			div(class='box',style={width:'970px',margin:'auto',border:'1px dashed #55aaff',padding:'20px'})
-				form(name='seoYahoo',action='',method='post')
-					div 
-						| 關鍵字:
-						input(type='text',name='keyword',value=sdata.keyword)
-					div
-						| 網址:
-						input(type='text',name='url',value=sdata.url)
-					div
-						input(type='submit',name='test',value='更新資料')
+div(class='funcShell' )
+	form(name='seoYahoo',action='',method='post')
+		div 
+			| 關鍵字:
+			input(type='text',name='keyword',value=data.keyword)
+		div
+			| 網址:
+			input(type='text',name='url',value=data.url)
+		div
+			input(type='button',name='test',value='更新資料')
+			input(type='hidden' , value=funcName)

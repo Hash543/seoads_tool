@@ -7,10 +7,10 @@
 var _ = require('lodash');
 var fs = require('fs');
 var chromeLocation = require('chrome-location');
-var seoConfig = require('../config/seoConfig');
+var seoConfig = require('seoConfig');
 var seo = seoConfig.seo;
 var scConfig = seoConfig.scConfig;
-var yconfig = JSON.parse(fs.readFileSync(scConfig.asYahoo));
+var yconfig = JSON.parse(fs.readFileSync(scConfig.asyahoo));
 if(_.isUndefined(yconfig.keyword)){
     console.log("yconfig is undefined!!!");
     throw "yconfig is undefined!!!";

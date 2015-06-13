@@ -7,10 +7,10 @@
 var _ = require('lodash');
 var fs = require('fs');
 var chromeLocation = require('chrome-location');
-var seoConfig = require('../config/seoConfig');
+var seoConfig = require('seoConfig');
 var seo = seoConfig.seo;
 var scConfig = seoConfig.scConfig;
-var gconfig = JSON.parse(fs.readFileSync(scConfig.google));
+var gconfig = JSON.parse(fs.readFileSync(scConfig.seogoogle));
 var pageNum = 0;
 if(_.isUndefined(gconfig.keyword)){
     console.log("gconfig is undefined!!!");

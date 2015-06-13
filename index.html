@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="public/css/main.css">
+		<link rel="stylesheet" href="public/css/jquery-ui.css">
+		<script type="text/javascript" src="public/javascripts/jquery-1.11.3.min.js"></script>
+		<script src="public/javascripts/jquery-ui.js"></script>
+		<script type="text/javascript" src="main.js"></script>
+	</head>
+	<body>
+		<div style="width:100%" class="main">
+			<div class="box">
+				<a href="index.html" class="navi">首頁</a>
+				<a href="/adslaccount" class="navi" id="adslConnect">ADSL account</a>
+				<div class="startService">
+					<input type="checkbox" > : 啟動服務
+				</div>
+			</div>
+		</div>
+		<div style="width:100%" class="main">
+			<div class="box">
+				<div style="margin:0 auto;width:100px;display:none;background:#cccc77;position:relative;left:-30px;" class="errorMsg">
+				</div>
+				<input type="hidden" name="currentMode" value="2">
+				<div  class="func-box">
+					<input type="radio" name="execMode" value="1">
+					<a style="font-size:16px" href="/seoyahoo" class="func" config="seoyahoo">Yahoo Seo enhance</a>
+				</div>
+				<div  class="func-box">
+					<input type="radio" name="execMode" value="2">
+					<a style="font-size:16px" href="/seogoogle" class="func" config="seogoogle">Google Seo enhance</a>
+				</div>
+				<div  class="func-box">
+					<input type="radio" name="execMode" value="3">
+					<a style="font-size:16px" href="/asyahoo" class="func" config="asyahoo">Yahoo assasin</a>
+				</div>
+				<div  class="func-box">
+					<input type="radio" name="execMode" value="4">
+					<a style="font-size:16px" href="/asgoogle" class="func" config="asgoogle">Google assasin</a>
+				</div>
+			</div>
+		</div>
+		<div id="adslConfig" title="Adsl Config">
+		</div>
+	</body>
+</html>
