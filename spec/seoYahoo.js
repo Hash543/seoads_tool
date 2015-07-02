@@ -6,6 +6,7 @@
 */
 var _ = require('lodash');
 var fs = require('fs');
+var util = require('../lib/util.js');
 var chromeLocation = require('chrome-location');
 var seoConfig = require('seoConfig');
 var scConfig = seoConfig.scConfig;
@@ -22,9 +23,8 @@ var permote = false;
 var webdriver = require('selenium-webdriver'),
     By = require('selenium-webdriver').By,
     until = require('selenium-webdriver').until;
-
 var b = new webdriver.Builder()
-    .forBrowser('firefox')
+    .forBrowser(util.browser())
     .build();
 var changePage = function(){
     var pageChanged = false;
@@ -66,7 +66,7 @@ var linkMatching = function(t){
 }
 var searchResultFilter = function(){
     console.log("searchResultFilter...");
-    b.sleep(_.random(2000, 8000));
+    b.sleep(_.random(2000, 5000));
     b.findElements(By.css('.res h3 a')).then(function(t){
         if(t.length > 0){
             linkMatching(t);
@@ -84,7 +84,7 @@ var searchResultFilter = function(){
             }
         }else{
             linkMatch.click();
-            b.sleep(_.random(2000 , 8000));
+            b.sleep(_.random(2000 , 5000));
             console.log("\n\n---------------job done---------------\n\n");
         }
     });
@@ -97,11 +97,10 @@ console.log("patten Yahoo:");
 console.log("  --keyword:" + yconfig.keyword);
 console.log("  --url:" + yconfig.url);
 b.get('http://tw.yahoo.com');
-b.sleep(_.random(2000, 8000));
-b.findElement(By.name('p')).sendKeys(yconfig.keyword);
+b.sleep(_.random(2000, 5000));
+b.findElement(By.name('p')).sendKeys(util.splitKeyword(yconfig.keyword));
 b.findElement(By.id('UHSearchWeb')).click().then(function(){
     searchResultFilter();
 });
 b.sleep(5000);
 b.quit();
-console.log(112233);
