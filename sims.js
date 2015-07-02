@@ -59,7 +59,6 @@ exec('Rasdial "'+ adsl.name +'" /disconnect' ,function(err,stdout ,stderr){
                 console.log(stderr2);
                 console.log("ADSL 重連失敗!");
             }
-            execScenario();
         });
     }else{
         console.log(err);
@@ -68,3 +67,4 @@ exec('Rasdial "'+ adsl.name +'" /disconnect' ,function(err,stdout ,stderr){
         console.log("ADSL 離線失敗!");
     }
 });
+execScenario();

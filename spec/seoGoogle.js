@@ -6,6 +6,7 @@
 */
 var _ = require('lodash');
 var fs = require('fs');
+var util = require('../lib/util.js');
 var chromeLocation = require('chrome-location');
 var seoConfig = require('seoConfig');
 var seo = seoConfig.seo;
@@ -23,7 +24,7 @@ var webdriver = require('selenium-webdriver'),
     until = require('selenium-webdriver').until;
 
 var b = new webdriver.Builder()
-    .forBrowser('firefox')
+    .forBrowser(util.browser())
     .build();
 var changePage = function(){
     var pageChanged = false;
@@ -90,7 +91,7 @@ console.log("  --keyword:" + gconfig.keyword);
 console.log("  --url:" + gconfig.url);
 b.get('http://www.google.com/ncr');
 b.sleep(_.random(2000, 8000));
-b.findElement(By.name('q')).sendKeys(gconfig.keyword);
+b.findElement(By.name('q')).sendKeys(util.splitKeyword(gconfig.keyword));
 b.findElement(By.name('btnG')).click().then(function(){
     searchResultFilter();
 });
