@@ -50,21 +50,42 @@ var execScenario = function(){
     //firefox cookies
     fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default" , "w+");
 };*/
-exec('Rasdial "'+ adsl.name +'" /disconnect' ,function(err,stdout ,stderr){
-    if(!err){
+var isWin = /^win/.test(process.platform);
+if(isWin){
+    exec('Rasdial "'+ adsl.name +'" /disconnect' ,function(err,stdout ,stderr){
+        if(err){
+            console.log(err);
+            console.log(stdout);
+            console.log(stderr);
+            console.log("ADSL disconnect fail!");
+        }
         exec('Rasdial '+ adsl.name +' '+ adsl.id +' ' + adsl.password , function(err2 ,stdout2 ,stderr2 ){
             if(err2){
                 console.log(err2);
                 console.log(stdout2);
                 console.log(stderr2);
-                console.log("ADSL 重連失敗!");
+                console.log("ADSL connect fail!");
             }
+            execScenario();
         });
-    }else{
-        console.log(err);
-        console.log(stdout);
-        console.log(stderr);
-        console.log("ADSL 離線失敗!");
-    }
-});
-execScenario();
+    });
+}else{
+    exec('/sbin/ifdown seoapp' , function(){
+        if(err){
+            console.log(err);
+            console.log(stdout);
+            console.log(stderr);
+            console.log("ADSL disconnect fail!");
+        }
+        exec('/sbin/ifup seoapp' , function(err2 ,stdout2 ,stderr2 ){
+            if(err2){
+                console.log(err2);
+                console.log(stdout2);
+                console.log(stderr2);
+                console.log("ADSL connect fail!");
+            }
+            execScenario();
+        });
+    });
+}
+

@@ -23,9 +23,15 @@ var permote = false;
 var webdriver = require('selenium-webdriver'),
     By = require('selenium-webdriver').By,
     until = require('selenium-webdriver').until;
+var browser = util.browser();
+console.log("browser");
+console.log(browser);
 var b = new webdriver.Builder()
-    .forBrowser(util.browser())
+    .forBrowser(browser)
     .build();
+/*var cookies = b.manage().getCookies();
+console.log("cookies");
+console.log(cookies);*/
 var changePage = function(){
     var pageChanged = false;
     pageNum++;
