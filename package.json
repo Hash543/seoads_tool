@@ -25,7 +25,8 @@
     "forever": "0.14.1",
     "forever-monitor": "1.5.2",
     "async": "1.0.0",
-    "nw": "*"
+    "nw": "*",
+    "firefox-profile": "*"
   },
   "bin":{
     "seoads": "sims.js"

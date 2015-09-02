@@ -6,26 +6,60 @@
 */
 var _ = require('lodash');
 var fs = require('fs');
-var util = require('../lib/util.js');
+var util = require(__dirname + '/../lib/util.js');
 var chromeLocation = require('chrome-location');
 var seoConfig = require('seoConfig');
+var FirefoxProfile = require('firefox-profile');
 var seo = seoConfig.seo;
 var scConfig = seoConfig.scConfig;
 var gconfig = JSON.parse(fs.readFileSync(scConfig.seogoogle));
 var pageNum = 0;
+var browser = util.browser();
 if(_.isUndefined(gconfig.keyword)){
     console.log("gconfig is undefined!!!");
     throw "gconfig is undefined!!!";
 }
-var i;
+var i; // for loop
+var b; // browser webdriver
 var permote = false;
+
 var webdriver = require('selenium-webdriver'),
     By = require('selenium-webdriver').By,
     until = require('selenium-webdriver').until;
+var innitialRobot = function(cb){
+    if(browser == 'chrome'){
+        //-------------------
+        var chrome = require('selenium-webdriver/chrome');
+        var opts = new chrome.Options();
+        opts.addArguments(['user-agent="'+util.randomUA()+'"']);
+        //-------------------
+        b = new webdriver.Builder().
+            withCapabilities(opts.toCapabilities()).
+            build();
+        cb();
+    }else{
+        //----------firefox user agent test---------
+        var myProfile = new FirefoxProfile();        
+        var capabilities = webdriver.Capabilities.firefox();
+        // here you set the user-agent preference 
+        myProfile.setPreference('general.useragent.override', util.randomUA());
+        console.log(myProfile);
 
-var b = new webdriver.Builder()
-    .forBrowser(util.browser())
-    .build();
+        // attach your newly created profile 
+        myProfile.encoded(function(encodedProfile) {
+            capabilities.set('firefox_profile', encodedProfile);
+            console.log(encodedProfile);
+            // start the browser 
+            b = new webdriver.Builder().
+                withCapabilities(capabilities).
+                build();
+            cb();
+        });
+        //-------------------    
+    }
+};
+//--------------------    
+
 var changePage = function(){
     var pageChanged = false;
     pageNum++;
@@ -86,14 +120,18 @@ var searchResultFilter = function(){
 //fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
 //fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default");
 //console.log(process.env.APPDATA);
-console.log("patten:");
-console.log("  --keyword:" + gconfig.keyword);
-console.log("  --url:" + gconfig.url);
-b.get('http://www.google.com/ncr');
-b.sleep(_.random(2000, 8000));
-b.findElement(By.name('q')).sendKeys(util.splitKeyword(gconfig.keyword));
-b.findElement(By.name('btnG')).click().then(function(){
-    searchResultFilter();
+innitialRobot(function(){
+    console.log("patten:");
+    console.log("  --keyword:" + gconfig.keyword);
+    console.log("  --url:" + gconfig.url);
+    b.get('http://list168.com/test.php');
+    b.sleep(_.random(2000, 5000));
+    b.get('http://www.google.com/ncr');
+    b.sleep(_.random(2000, 8000));
+    b.findElement(By.name('q')).sendKeys(util.splitKeyword(gconfig.keyword));
+    b.findElement(By.name('btnG')).click().then(function(){
+        searchResultFilter();
+    });
+    b.sleep(5000);
+    b.quit();    
 });
-b.sleep(5000);
-b.quit();

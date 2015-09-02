@@ -10,7 +10,7 @@ var exec = require('child_process').exec,
     child;
 var error = false;
 var adsl = JSON.parse(fs.readFileSync('public/adslconfig.json' , {encoding:'utf-8'}));
-console.log(adsl);
+//console.log(adsl);
 var cb = function(err ,b ,c){
     error = err;
     console.log(err);
@@ -70,14 +70,14 @@ if(isWin){
         });
     });
 }else{
-    exec('/sbin/ifdown seoapp' , function(){
+    exec('poff' , function(){
         if(err){
             console.log(err);
             console.log(stdout);
             console.log(stderr);
             console.log("ADSL disconnect fail!");
         }
-        exec('/sbin/ifup seoapp' , function(err2 ,stdout2 ,stderr2 ){
+        exec('pon dsl-provider' , function(err2 ,stdout2 ,stderr2 ){
             if(err2){
                 console.log(err2);
                 console.log(stdout2);

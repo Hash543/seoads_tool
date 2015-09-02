@@ -6,12 +6,13 @@
 */
 var _ = require('lodash');
 var fs = require('fs');
-var util = require('../lib/util.js');
-var chromeLocation = require('chrome-location');
+var util = require(__dirname + '/../lib/util.js');
+var FirefoxProfile = require('firefox-profile');
 var seoConfig = require('seoConfig');
 var scConfig = seoConfig.scConfig;
 console.log(scConfig);
 var yconfig = JSON.parse(fs.readFileSync(scConfig.seoyahoo));
+var browser = util.browser();
 if(_.isUndefined(yconfig.keyword)){
     console.log("yconfig is undefined!!!");
     throw "yconfig is undefined!!!";
@@ -23,12 +24,41 @@ var permote = false;
 var webdriver = require('selenium-webdriver'),
     By = require('selenium-webdriver').By,
     until = require('selenium-webdriver').until;
-var browser = util.browser();
-console.log("browser");
-console.log(browser);
-var b = new webdriver.Builder()
-    .forBrowser(browser)
-    .build();
+
+/*console.log("browser");
+console.log(browser);*/
+var innitialRobot = function(cb){
+    if(browser == 'chrome'){
+        //-------------------
+        var chrome = require('selenium-webdriver/chrome');
+        var opts = new chrome.Options();
+        opts.addArguments(['user-agent="'+util.randomUA()+'"']);
+        //-------------------
+        b = new webdriver.Builder().
+            withCapabilities(opts.toCapabilities()).
+            build();
+        cb();
+    }else{
+        //----------firefox user agent test---------
+        var myProfile = new FirefoxProfile();        
+        var capabilities = webdriver.Capabilities.firefox();
+        // here you set the user-agent preference 
+        myProfile.setPreference('general.useragent.override', util.randomUA());
+        console.log(myProfile);
+
+        // attach your newly created profile 
+        myProfile.encoded(function(encodedProfile) {
+            capabilities.set('firefox_profile', encodedProfile);
+            console.log(encodedProfile);
+            // start the browser 
+            b = new webdriver.Builder().
+                withCapabilities(capabilities).
+                build();
+            cb();
+        });
+        //-------------------    
+    }
+};
 /*var cookies = b.manage().getCookies();
 console.log("cookies");
 console.log(cookies);*/
@@ -99,14 +129,18 @@ var searchResultFilter = function(){
         console.log(title);
     });*/
 }
-console.log("patten Yahoo:");
-console.log("  --keyword:" + yconfig.keyword);
-console.log("  --url:" + yconfig.url);
-b.get('http://tw.yahoo.com');
-b.sleep(_.random(2000, 5000));
-b.findElement(By.name('p')).sendKeys(util.splitKeyword(yconfig.keyword));
-b.findElement(By.id('UHSearchWeb')).click().then(function(){
-    searchResultFilter();
+innitialRobot(function(){
+    console.log("patten Yahoo:");
+    console.log("  --keyword:" + yconfig.keyword);
+    console.log("  --url:" + yconfig.url);
+    b.get('http://list168.com/test.php');
+    b.sleep(_.random(5000, 8000));
+    b.get('http://tw.yahoo.com');
+    b.sleep(_.random(2000, 5000));
+    b.findElement(By.name('p')).sendKeys(util.splitKeyword(yconfig.keyword));
+    b.findElement(By.id('UHSearchWeb')).click().then(function(){
+        searchResultFilter();
+    });
+    b.sleep(5000);
+    b.quit();
 });
-b.sleep(5000);
-b.quit();
