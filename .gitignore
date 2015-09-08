@@ -1,2 +1,5 @@
 node_modules/nw
 *.nw
+public/*.txt
+public/*.json
+public/scenarioConfig
