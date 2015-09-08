@@ -22,7 +22,8 @@ if(_.isUndefined(gconfig.keyword)){
 var i; // for loop
 var b; // browser webdriver
 var permote = false;
-
+var randomViewCount = _.random(1,4);
+var randomViewExecCount = 0;
 var webdriver = require('selenium-webdriver'),
     By = require('selenium-webdriver').By,
     until = require('selenium-webdriver').until;
@@ -106,8 +107,10 @@ var searchResultFilter = function(){
                 changePage();
             }
         }else{
-            matchResult.click();
-            b.sleep(_.random(2000 , 8000));
+            matchResult.click().then(function(){
+                randomView();
+            });
+            
             console.log("\n\n---------------job done---------------\n\n");
         }
     });
@@ -115,6 +118,25 @@ var searchResultFilter = function(){
         console.log("title");
         console.log(title);
     });*/
+}
+var randomView = function(){
+    b.sleep(_.random(2000 , 8000));
+    console.log(randomViewExecCount);
+    console.log(randomViewCount);
+    if(randomViewExecCount >= randomViewCount){
+        console.log("radomview count:" + randomViewExecCount);
+        return;
+    }
+    b.findElements(By.css('nav li a')).then(function(t){
+        t[_.random(t.length-1)].click().then(function(){
+            randomViewExecCount++;
+            b.sleep(_.random(1000 , 3000));
+            b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then();
+            b.sleep(_.random(1000 , 3000));
+            b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then();
+            randomView();
+        });
+    });
 }
 //console.log(fs.readFileSync(chromeLocation + "\\..\\..\\user data\\default\\cookies"));
 //fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
@@ -124,8 +146,6 @@ innitialRobot(function(){
     console.log("patten:");
     console.log("  --keyword:" + gconfig.keyword);
     console.log("  --url:" + gconfig.url);
-    b.get('http://list168.com/test.php');
-    b.sleep(_.random(2000, 5000));
     b.get('http://www.google.com/ncr');
     b.sleep(_.random(2000, 8000));
     b.findElement(By.name('q')).sendKeys(util.splitKeyword(gconfig.keyword));

@@ -70,7 +70,7 @@ if(isWin){
         });
     });
 }else{
-    exec('poff' , function(){
+    exec('poff -a' , function(err ,stdout ,stderr){
         if(err){
             console.log(err);
             console.log(stdout);
