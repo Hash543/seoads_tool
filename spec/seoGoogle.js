@@ -27,7 +27,7 @@ var randomViewExecCount = 0;
 var webdriver = require('selenium-webdriver'),
     By = require('selenium-webdriver').By,
     until = require('selenium-webdriver').until;
-var innitialRobot = function(cb){
+var initialRobot = function(cb){
     if(browser == 'chrome'){
         //-------------------
         var chrome = require('selenium-webdriver/chrome');
@@ -127,22 +127,28 @@ var randomView = function(){
         console.log("radomview count:" + randomViewExecCount);
         return;
     }
-    b.findElements(By.css('nav li a')).then(function(t){
-        t[_.random(t.length-1)].click().then(function(){
-            randomViewExecCount++;
-            b.sleep(_.random(1000 , 3000));
-            b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then();
-            b.sleep(_.random(1000 , 3000));
-            b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then();
-            randomView();
+    b.getTitle().then(function(title){
+        b.findElements(By.css('nav li a')).then(function(t){
+            console.log(123);
+            t[_.random(t.length-1)].click().then(function(){
+                randomViewExecCount++;
+                b.sleep(_.random(1000 , 3000));
+                b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then();
+                b.sleep(_.random(1000 , 3000));
+                b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then(function(){
+                    b.sleep(_.random(1000 , 3000));
+                    randomView();
+                });
+            });
         });
     });
+
 }
 //console.log(fs.readFileSync(chromeLocation + "\\..\\..\\user data\\default\\cookies"));
 //fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
 //fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default");
 //console.log(process.env.APPDATA);
-innitialRobot(function(){
+initialRobot(function(){
     console.log("patten:");
     console.log("  --keyword:" + gconfig.keyword);
     console.log("  --url:" + gconfig.url);
