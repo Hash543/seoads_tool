@@ -108,7 +108,9 @@ var searchResultFilter = function(){
             }
         }else{
             matchResult.click().then(function(){
+                console.log("randomView start");
                 randomView();
+                console.log("randomView end");
             });
             
             console.log("\n\n---------------job done---------------\n\n");
@@ -125,24 +127,29 @@ var randomView = function(){
     console.log(randomViewCount);
     if(randomViewExecCount >= randomViewCount){
         console.log("radomview count:" + randomViewExecCount);
+        b.quit();
         return;
-    }
-    b.getTitle().then(function(title){
-        b.findElements(By.css('nav li a')).then(function(t){
-            console.log(123);
-            t[_.random(t.length-1)].click().then(function(){
-                randomViewExecCount++;
-                b.sleep(_.random(1000 , 3000));
-                b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then();
-                b.sleep(_.random(1000 , 3000));
-                b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then(function(){
-                    b.sleep(_.random(1000 , 3000));
-                    randomView();
+    }else{
+        b.wait(function () {
+            if(b.isElementPresent(webdriver.By.css('nav li a'))){
+                b.findElements(By.css('nav li a')).then(function(t){
+                    t[_.random(t.length-1)].click().then(function(){
+                        randomViewExecCount++;
+                        b.sleep(_.random(1000 , 3000));
+                        b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then();
+                        b.sleep(_.random(1000 , 3000));
+                        b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then(function(){
+                            b.sleep(_.random(1000 , 3000));
+                            randomView();
+                        });
+                    });
+                    
                 });
-            });
-        });
-    });
-
+            }else{
+                b.quit();
+            }
+        }, 15000);
+    } 
 }
 //console.log(fs.readFileSync(chromeLocation + "\\..\\..\\user data\\default\\cookies"));
 //fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
