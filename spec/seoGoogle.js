@@ -123,33 +123,50 @@ var searchResultFilter = function(){
 }
 var randomView = function(){
     b.sleep(_.random(2000 , 8000));
+    console.log("randomViewExecCount");
     console.log(randomViewExecCount);
+    console.log("randomViewCount");
     console.log(randomViewCount);
-    if(randomViewExecCount >= randomViewCount){
-        console.log("radomview count:" + randomViewExecCount);
-        b.quit();
-        return;
-    }else{
-        b.wait(function () {
+    var randomNav;
+    if(randomViewExecCount < randomViewCount){
+        console.log("randomViewExecCount < randomViewCount");
+        b.getTitle().then(function(){
+            b.sleep(3000);
+            console.log("radomview count:" + randomViewExecCount);
             if(b.isElementPresent(webdriver.By.css('nav li a'))){
-                b.findElements(By.css('nav li a')).then(function(t){
-                    t[_.random(t.length-1)].click().then(function(){
-                        randomViewExecCount++;
-                        b.sleep(_.random(1000 , 3000));
-                        b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then();
-                        b.sleep(_.random(1000 , 3000));
-                        b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then(function(){
+                b.findElements(By.css('nav > ul > li > a')).then(function(t){
+                    randomNav = _.random(0,(t.length-1));
+                    console.log("randomNav");
+                    console.log(randomNav);
+                    t.map(function(v , k){
+                        v.getAttribute('href').then(function(href){
+                            console.log("key");
+                            console.log(k);
+                            console.log("href");
+                            console.log(href);
+                            if(randomNav == k){
+                                v.click();
+                            }
+                        }).then(function(){
+                            console.log("randomViewExecCount +++");
+                            randomViewExecCount++;
                             b.sleep(_.random(1000 , 3000));
+                            b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then();
+                            b.sleep(_.random(1000 , 3000));
+                            b.executeScript('window.scrollTo(0,'+ (50*(_.random(7))) +');').then();
+                            b.sleep(_.random(1000 , 3000));
+                            console.log(456);
                             randomView();
                         });
                     });
-                    
+                    console.log(123);
                 });
-            }else{
-                b.quit();
             }
-        }, 15000);
-    } 
+        },15000);
+    }else{
+        console.log("randomViewExecCount >= randomViewCount");
+        b.quit();
+    }
 }
 //console.log(fs.readFileSync(chromeLocation + "\\..\\..\\user data\\default\\cookies"));
 //fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
@@ -165,6 +182,7 @@ initialRobot(function(){
     b.findElement(By.name('btnG')).click().then(function(){
         searchResultFilter();
     });
+    console.log("result filter");
     b.sleep(5000);
     b.quit();    
 });
