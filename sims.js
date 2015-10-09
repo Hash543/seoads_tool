@@ -5,6 +5,7 @@
 3.delay 時間
 */
 var _ = require('lodash');
+var os = require('os');
 var fs = require('fs');
 var exec = require('child_process').exec,
     child;
@@ -18,30 +19,33 @@ var cb = function(err ,b ,c){
     console.log(c);
     console.log("callback");
 };
-var execScenario = function(){
+var execScenario = function(callback){
     var execMode = fs.readFileSync('public/execMode.txt', {encoding:'utf-8'});
     console.log('execMode');
     console.log(execMode);
+    if(os.platform() == 'linux'){
+        exec("pkill chrome");
+    }
     switch(execMode){
         case('1'):
             console.log("exec seoYahoo");
-            child = exec("node spec/seoYahoo.js" , cb);
+            child = exec("node spec/seoYahoo.js" , callback);
         break;
         case('2'):
             console.log("exec seoGoogle");
-            child = exec("node spec/seoGoogle.js" , cb);
+            child = exec("node spec/seoGoogle.js" , callback);
         break;
         case('3'):
             console.log("exec Yahoo assasin");
-            child = exec("node spec/asYahoo.js" , cb);
+            child = exec("node spec/asYahoo.js" , callback);
         break;
         case('4'):
             console.log("exec Google assasin");
-            child = exec("node spec/asGoogle.js" , cb);
+            child = exec("node spec/asGoogle.js" , callback);
         break;
         default:
             console.log("exec seoYahoo");
-            child = exec("node spec/seoYahoo.js" , cb);
+            child = exec("node spec/seoYahoo.js" , callback);
     }
 };
 /*var cleanCookie = function(){
@@ -66,7 +70,7 @@ if(isWin){
                 console.log(stderr2);
                 console.log("ADSL connect fail!");
             }
-            execScenario();
+            execScenario(cb);
         });
     });
 }else{
@@ -84,7 +88,7 @@ if(isWin){
                 console.log(stderr2);
                 console.log("ADSL connect fail!");
             }
-            execScenario();
+            execScenario(cb);
         });
     });
 }
