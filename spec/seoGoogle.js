@@ -6,19 +6,18 @@
 */
 var _ = require('lodash');
 var fs = require('fs');
+var rest = require('rest');
+var mime = require('rest/interceptor/mime');
+var client = rest.wrap(mime);
 var util = require(__dirname + '/../lib/util.js');
 var chromeLocation = require('chrome-location');
 var seoConfig = require('seoConfig');
 var FirefoxProfile = require('firefox-profile');
 var seo = seoConfig.seo;
-var scConfig = seoConfig.scConfig;
-var gconfig = JSON.parse(fs.readFileSync(scConfig.seogoogle));
 var pageNum = 0;
 var browser = util.browser();
-if(_.isUndefined(gconfig.keyword)){
-    console.log("gconfig is undefined!!!");
-    throw "gconfig is undefined!!!";
-}
+
+var sc; //scenario config
 var i; // for loop
 var b; // browser webdriver
 var permote = false;
@@ -90,7 +89,7 @@ var searchResultFilter = function(){
                     //過濾蒐尋結果的連結網址
                     v.getAttribute('href').then(function(attr){
                         console.log("  --href:" + attr);
-                        if(attr.match(gconfig.url) ){
+                        if(attr.match(sc.url) ){
                             matchResult = v;
                         }
                     });
@@ -172,17 +171,25 @@ var randomView = function(){
 //fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
 //fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default");
 //console.log(process.env.APPDATA);
-initialRobot(function(){
-    console.log("patten:");
-    console.log("  --keyword:" + gconfig.keyword);
-    console.log("  --url:" + gconfig.url);
-    b.get('http://www.google.com/ncr');
-    b.sleep(_.random(2000, 8000));
-    b.findElement(By.name('q')).sendKeys(util.splitKeyword(gconfig.keyword));
-    b.findElement(By.name('btnG')).click().then(function(){
-        searchResultFilter();
+client('http://list168.com/seoapi/getcustomer.php').then(function(response) {
+    sc = JSON.parse(response.entity)[0];
+    if(_.isUndefined(sc.keyword)){
+        console.log("gconfig is undefined!!!");
+        throw "gconfig is undefined!!!";
+    }
+    sc.url = sc.c_address;
+    initialRobot(function(){
+        console.log("  --keyword:" + sc.keyword);
+        console.log("  --url:" + sc.url);
+        b.get('http://www.google.com/ncr');
+        b.sleep(_.random(2000, 8000));
+        b.findElement(By.name('q')).sendKeys(util.splitKeyword(sc.keyword));
+        b.findElement(By.name('btnG')).click().then(function(){
+            searchResultFilter();
+        });
+        console.log("result filter");
+        b.sleep(5000);
+        b.quit();    
     });
-    console.log("result filter");
-    b.sleep(5000);
-    b.quit();    
+
 });
