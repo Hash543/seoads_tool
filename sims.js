@@ -9,8 +9,9 @@ var os = require('os');
 var fs = require('fs');
 var exec = require('child_process').exec,
     child;
+var baseDir = __dirname +"/";
 var error = false;
-var adsl = JSON.parse(fs.readFileSync('public/adslconfig.json' , {encoding:'utf-8'}));
+var adsl = JSON.parse(fs.readFileSync(baseDir + 'public/adslconfig.json' , {encoding:'utf-8'}));
 //console.log(adsl);
 var cb = function(err ,b ,c){
     error = err;
@@ -20,7 +21,7 @@ var cb = function(err ,b ,c){
     console.log("callback");
 };
 var execScenario = function(callback){
-    var execMode = fs.readFileSync('public/execMode.txt', {encoding:'utf-8'});
+    var execMode = fs.readFileSync(baseDir + 'public/execMode.txt', {encoding:'utf-8'});
     console.log('execMode');
     console.log(execMode);
     if(os.platform() == 'linux'){
@@ -29,23 +30,23 @@ var execScenario = function(callback){
     switch(execMode){
         case('1'):
             console.log("exec seoYahoo");
-            child = exec("node spec/seoYahoo.js" , callback);
+            child = exec("node "+baseDir +"spec/seoYahoo.js" , callback);
         break;
         case('2'):
             console.log("exec seoGoogle");
-            child = exec("node spec/seoGoogle.js" , callback);
+            child = exec("node "+baseDir +"spec/seoGoogle.js" , callback);
         break;
         case('3'):
             console.log("exec Yahoo assasin");
-            child = exec("node spec/asYahoo.js" , callback);
+            child = exec("node "+baseDir +"spec/asYahoo.js" , callback);
         break;
         case('4'):
             console.log("exec Google assasin");
-            child = exec("node spec/asGoogle.js" , callback);
+            child = exec("node "+baseDir +"spec/asGoogle.js" , callback);
         break;
         default:
             console.log("exec seoYahoo");
-            child = exec("node spec/seoYahoo.js" , callback);
+            child = exec("node "+baseDir +"spec/seoYahoo.js" , callback);
     }
 };
 /*var cleanCookie = function(){

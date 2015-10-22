@@ -111,7 +111,6 @@ var searchResultFilter = function(){
                 randomView();
                 console.log("randomView end");
             });
-            
             console.log("\n\n---------------job done---------------\n\n");
         }
     });
