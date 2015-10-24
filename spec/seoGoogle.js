@@ -6,9 +6,7 @@
 */
 var _ = require('lodash');
 var fs = require('fs');
-var rest = require('rest');
-var mime = require('rest/interceptor/mime');
-var client = rest.wrap(mime);
+var http = require('http');
 var util = require(__dirname + '/../lib/util.js');
 var chromeLocation = require('chrome-location');
 var seoConfig = require('seoConfig');
@@ -170,8 +168,18 @@ var randomView = function(){
 //fs.openSync(chromeLocation + "\\..\\..\\user data\\default\\cookies");
 //fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default");
 //console.log(process.env.APPDATA);
-client('http://list168.com/seoapi/getcustomer.php').then(function(response) {
-    sc = JSON.parse(response.entity)[0];
+var options = {
+  hostname: 'list168.com',
+  port: 80,
+  path: '/seoapi/getcustomer.php',
+};
+
+var req = http.request(options, function(res) {
+  console.log('STATUS: ' + res.statusCode);
+  console.log('HEADERS: ' + JSON.stringify(res.headers));
+  res.setEncoding('utf8');
+  res.on('data', function (chunk) {
+    sc = JSON.parse(chunk)[0];
     if(_.isUndefined(sc.keyword)){
         console.log("gconfig is undefined!!!");
         throw "gconfig is undefined!!!";
@@ -190,5 +198,15 @@ client('http://list168.com/seoapi/getcustomer.php').then(function(response) {
         b.sleep(5000);
         b.quit();    
     });
-
+    console.log('BODY: ' + chunk);
+  });
+  res.on('end', function() {
+    console.log('No more data in response.')
+  })
 });
+
+req.on('error', function(e) {
+  console.log('problem with request: ' + e.message);
+});
+
+req.end();
