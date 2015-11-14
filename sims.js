@@ -25,7 +25,10 @@ var execScenario = function(callback){
     console.log('execMode');
     console.log(execMode);
     if(os.platform() == 'linux'){
-        exec("pkill chrome");
+        //exec("pkill chrome");
+        exec("pkill firefox");
+    }else{
+    	exec("taskkill /f /im firefox.exe");
     }
     switch(execMode){
         case('1'):
