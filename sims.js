@@ -28,7 +28,7 @@ var execScenario = function(callback){
         //exec("pkill chrome");
         exec("pkill firefox");
     }else{
-    	exec("taskkill /f /im firefox.exe");
+    	//exec("taskkill /f /im firefox.exe");
     }
     switch(execMode){
         case('1'):
