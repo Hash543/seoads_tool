@@ -191,9 +191,20 @@ var req = http.request(options, function(res) {
         b.get('http://www.google.com/ncr');
         b.sleep(_.random(2000, 8000));
         b.findElement(By.name('q')).sendKeys(util.splitKeyword(sc.keyword));
-        b.findElement(By.name('btnG')).click().then(function(){
+        b.sleep(_.random(2000, 8000));
+        b.findElement(By.name('q')).sendKeys(webdriver.Key.ENTER);
+        /*if(b.isElementPresent(webdriver.By.name('btnG'))){
+            b.findElement(By.name('btnG')).click().then(function(){
+                searchResultFilter();
+            });
+        }else{
+            b.findElement(By.name('btnK')).click().then(function(){
+                searchResultFilter();
+            });
+        }*/
+        /*b.findElement(By.name('btnK')).click().then(function(){
             searchResultFilter();
-        });
+        });*/
         console.log("result filter");
         b.sleep(5000);
         b.quit();    
