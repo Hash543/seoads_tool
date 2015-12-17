@@ -192,7 +192,9 @@ var req = http.request(options, function(res) {
         b.sleep(_.random(2000, 8000));
         b.findElement(By.name('q')).sendKeys(util.splitKeyword(sc.keyword));
         b.sleep(_.random(2000, 8000));
-        b.findElement(By.name('q')).sendKeys(webdriver.Key.ENTER);
+        b.findElement(By.name('q')).sendKeys(webdriver.Key.ENTER).then(function(){
+            searchResultFilter();
+        });
         /*if(b.isElementPresent(webdriver.By.name('btnG'))){
             b.findElement(By.name('btnG')).click().then(function(){
                 searchResultFilter();
