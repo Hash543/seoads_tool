@@ -1,4 +1,4 @@
-node_modules/nw
+node_modules
 *.nw
 public/*.txt
 public/*.json
