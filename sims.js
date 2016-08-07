@@ -7,11 +7,12 @@
 var _ = require('lodash');
 var os = require('os');
 var fs = require('fs');
+var http = require('http');
 var exec = require('child_process').exec,
     child;
 var baseDir = __dirname +"/";
 var error = false;
-var adsl = JSON.parse(fs.readFileSync(baseDir + 'public/adslconfig.json' , {encoding:'utf-8'}));
+
 //console.log(adsl);
 var cb = function(err ,b ,c){
     error = err;
@@ -51,6 +52,12 @@ var execScenario = function(callback){
             console.log("exec seoYahoo");
             child = exec("node "+baseDir +"spec/seoYahoo.js" , callback);
     }
+    http.get(process.env.machineApi, (res) => {
+      // consume response body
+      res.resume();
+    }).on('error', (e) => {
+      console.log(`Got error: ${e.message}`);
+    });
 };
 /*var cleanCookie = function(){
     //chrome cookies
@@ -60,14 +67,14 @@ var execScenario = function(callback){
 };*/
 var isWin = /^win/.test(process.platform);
 if(isWin){
-    exec('Rasdial "'+ adsl.name +'" /disconnect' ,function(err,stdout ,stderr){
+    exec('Rasdial "seoapp" /disconnect' ,function(err,stdout ,stderr){
         if(err){
             console.log(err);
             console.log(stdout);
             console.log(stderr);
             console.log("ADSL disconnect fail!");
         }
-        exec('Rasdial '+ adsl.name +' '+ adsl.id +' ' + adsl.password , function(err2 ,stdout2 ,stderr2 ){
+        exec('Rasdial seoapp '+ process.env.adslaccount +' ' + process.env.adslpassword , function(err2 ,stdout2 ,stderr2 ){
             if(err2){
                 console.log(err2);
                 console.log(stdout2);
