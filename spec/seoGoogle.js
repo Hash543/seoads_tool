@@ -169,7 +169,7 @@ var randomView = function(){
 //fs.openSync(process.env.APPDATA + "\\Mozilla\\Firefox\\Profiles\\p5577gez.default");
 //console.log(process.env.APPDATA);
 var options = {
-  hostname: 'list168.com',
+  hostname: 'www.178yo.com',
   port: 80,
   path: '/seoapi/getcustomer.php',
 };
