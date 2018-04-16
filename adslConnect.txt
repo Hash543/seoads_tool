@@ -1,7 +1,7 @@
-function adsl_cmd($conn=true){
+﻿function adsl_cmd($conn=true){
  $results = '';
  if ($conn === true) {
-  //$results = win_exec('cmd.exe /c Rasdial "'.ADSL_NAME.' 72983396@hinet.net vmbanmrn"');
+  //$results = win_exec('cmd.exe /c Rasdial "'.ADSL_NAME.' 11223344@hinet.net 11223344"');
   if (is_window()) {
    $results = exec('Rasdial '.ADSL_NAME.' '.ADSL_ACCOUNT.' '. ADSL_PWS);
   }else {
@@ -17,7 +17,7 @@ function adsl_cmd($conn=true){
  }
  return $results;
 }
-Rasdial hihi 74110964@hinet.net czonakxv
+Rasdial hihi 1122334455@hinet.net czonakxv
 
-ID 74110964@hinet.net
-密碼 czonakxv
+ID 11223344@hinet.net
+密碼 11223344
